@@ -17,6 +17,7 @@ class Team
     {
         $check = DB::selectOne("SELECT * FROM teams WHERE NAME = :name", ['name' => $this->name]);
 
+        // Si "name" existe, alors return false
         if (!empty($check)) {
             return false;
         }
@@ -27,7 +28,7 @@ class Team
     }
 
     /**
-     * Crée un objet Team
+     * Créé et return un objet Team
      *
      * @param integer $id
      * @param string $name
@@ -48,11 +49,17 @@ class Team
         return $team;
     }
 
+    /**
+     * Créé un objet à partir des données récupérées de la base de données identifiée par l'ID de l'objet souhaité
+     *
+     * @param integer $id
+     * @return Team|null
+     */
     public static function find(int $id): ?Team
     {
         $res = DB::selectOne("SELECT * FROM teams where id = :id", ['id' => $id]);
 
-        // Si il n'y a rien, return null
+        // Si le tableau ne contient pas l'index, return null
         if (!isset($res[0])) {
             return null;
         }
@@ -61,17 +68,27 @@ class Team
         return self::make(['id' => $res['id'], 'name' => $res['name'], 'state_id' => $res['state_id']]);
     }
 
+    /**
+     * Retourne un tableau associatif de teams
+     *
+     * @return array
+     */
     public static function all(): array
     {
         return DB::selectMany("SELECT * FROM teams", []);
     }
 
+    /**
+     * Enregistre l'objet en base de donnée
+     *
+     * @return boolean
+     */
     public function save(): bool
     {
 
         $check = DB::selectOne("SELECT * FROM teams WHERE NAME = :name", ['name' => $this->name]);
 
-        // si il n'est pas vide, alors return false, car le nom sera dupliqué
+        // si le tableau n'est pas vide, alors return false car le nom sera dupliqué
         if (!empty($check)) {
             return false;
         }
@@ -79,11 +96,22 @@ class Team
         return DB::execute("UPDATE teams set name = :name, state_id = :state_id WHERE id = :id", ['id' => $this->id, 'name' => $this->name, 'state_id' => $this->state_id]);
     }
 
+    /**
+     * Supprime l'objet de la base de données
+     *
+     * @return boolean
+     */
     public function delete(): bool
     {
         return self::destroy($this->id);
     }
 
+    /**
+     * Supprime un objet de la base de donnée via son ID
+     *
+     * @param integer $id
+     * @return boolean
+     */
     public static function destroy(int $id): bool
     {
         try {

@@ -19,7 +19,6 @@ class TeamTest extends TestCase
      */
     public function testFind()
     {
-        // var_dump(Team::find(1));
         $this->assertInstanceOf(Team::class, Team::find(1));
         $this->assertNull(Team::find(1000));
     }
