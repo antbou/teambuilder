@@ -69,13 +69,19 @@ class Team
     }
 
     /**
-     * Retourne un tableau associatif de teams
+     * Retourne un tableau d'objet teams
      *
      * @return array
      */
     public static function all(): array
     {
-        return DB::selectMany("SELECT * FROM teams", []);
+        $res = [];
+
+        foreach (DB::selectMany("SELECT * FROM teams", []) as $index) {
+            $res[] = self::make(['id' => $index['id'], 'name' => $index['name'], 'state_id' => $index['state_id']]);
+        }
+
+        return $res;
     }
 
     /**
