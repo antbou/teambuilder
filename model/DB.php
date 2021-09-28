@@ -39,12 +39,12 @@ class DB
         return $result;
     }
 
-    public static function execute(string $query, array $params)
+    public static function execute(string $query, array $params): bool
     {
         $db = self::getPdo();
         $sth = $db->prepare($query);
         $sth->execute($params);
 
-        return $sth->execute($params);;
+        return $sth->execute($params);
     }
 }
