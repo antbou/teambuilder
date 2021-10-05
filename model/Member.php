@@ -3,6 +3,7 @@
 namespace Teambuilder\model;
 
 use Teambuilder\model\DB;
+use Teambuilder\model\Team;
 use Teambuilder\model\Model;
 
 class Member extends Model
@@ -44,7 +45,13 @@ class Member extends Model
 
     static function all(): array
     {
-        return DB::selectMany("SELECT * FROM members ", []);
+        $res = [];
+
+        foreach (DB::selectMany("SELECT * FROM members", []) as $index) {
+            $res[] = self::make(['id' => $index['id'], 'name' => $index['name'], 'role_id' => $index['role_id']]);
+        }
+
+        return $res;
     }
 
     static function find(int $id): ?Member
@@ -84,5 +91,17 @@ class Member extends Model
         } catch (\Throwable $th) {
             return false;
         }
+    }
+
+    public function teams()
+    {
+        $res = [];
+        $res = DB::selectMany("SELECT teams.id, teams.name, teams.state_id FROM teams INNER JOIN team_member ON team_member.team_id = teams.id WHERE team_member.member_id = :id", ['id' => $this->id]);
+        $teams = [];
+        foreach ($res as $team) {
+            $teams[] = Team::make(['id' => $team['id'], 'name' => $team['name'], 'state_id' => $team['state_id']]);
+        }
+
+        return $teams;
     }
 }
