@@ -1,6 +1,6 @@
 <?php
 
-require __DIR__ . "/../model/DB.php";
+require_once('DB.php');
 
 class Member
 {
