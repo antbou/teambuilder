@@ -3,9 +3,9 @@
 namespace Teambuilder\model;
 
 use Teambuilder\model\DB;
+use Teambuilder\model\Model;
 
-
-class Team
+class Team extends Model
 {
     public $id = null;
     public $name;

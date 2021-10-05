@@ -3,8 +3,9 @@
 namespace Teambuilder\model;
 
 use Teambuilder\model\DB;
+use Teambuilder\model\Model;
 
-class Role
+class Role extends Model
 {
     public $id;
     public $slug;

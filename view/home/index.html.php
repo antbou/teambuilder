@@ -1,2 +1,1 @@
-<?php
-var_dump($_SESSION);
+<?= $_SESSION['membre']->name ?>

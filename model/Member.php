@@ -3,10 +3,9 @@
 namespace Teambuilder\model;
 
 use Teambuilder\model\DB;
+use Teambuilder\model\Model;
 
-require_once('.env.php');
-
-class Member
+class Member extends Model
 {
     public $id = null;
     public $name;
