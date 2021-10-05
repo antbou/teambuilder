@@ -1,8 +1,14 @@
 <?php
-require_once('DB.php');
+
+namespace Teambuilder\model;
+
+use Teambuilder\model\DB;
 
 class Role
 {
+    public $id;
+    public $slug;
+    public $name;
 
     static function make(array $fields): Role // create object, but no db record
     {
@@ -17,7 +23,7 @@ class Role
     {
         try {
             return DB::insert("INSERT INTO roles(slug,name) VALUES (:slug, :name)", ["slug" => $this->slug, "name" => $this->name]);
-        } catch (PDOException $Exception) {
+        } catch (\PDOException $Exception) {
             return false;
         }
     }
@@ -38,7 +44,7 @@ class Role
     {
         try {
             return DB::execute("UPDATE roles set name = :name, slug = :slug WHERE id = :id", ["slug" => $this->slug, "name" => $this->name, "id" => $this->id]);
-        } catch (PDOException $Exception) {
+        } catch (\PDOException $Exception) {
             return false;
         }
     }
@@ -47,7 +53,7 @@ class Role
     {
         try {
             return DB::execute("DELETE FROM roles WHERE id = :id", ["id" => $this->id]);
-        } catch (PDOException $Exception) {
+        } catch (\PDOException $Exception) {
             return false;
         }
     }
@@ -56,12 +62,8 @@ class Role
     {
         try {
             return DB::execute("DELETE FROM roles WHERE id = :id", ["id" => $id]);
-        } catch (PDOException $Exception) {
+        } catch (\PDOException $Exception) {
             return false;
         }
     }
-
-    public $id;
-    public $slug;
-    public $name;
 }

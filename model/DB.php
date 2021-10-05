@@ -1,5 +1,9 @@
 <?php
 
+namespace Teambuilder\model;
+
+use PDO;
+
 class DB
 {
 

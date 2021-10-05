@@ -1,6 +1,9 @@
 <?php
 
-require_once('DB.php');
+namespace Teambuilder\model;
+
+use Teambuilder\model\DB;
+
 
 class Team
 {

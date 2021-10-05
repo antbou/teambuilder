@@ -1,6 +1,10 @@
 <?php
 
-require_once('DB.php');
+namespace Teambuilder\model;
+
+use Teambuilder\model\DB;
+
+require_once('.env.php');
 
 class Member
 {
@@ -8,6 +12,8 @@ class Member
     public $name;
     public $password;
     public $role_id;
+
+    const DEFAULT = USER_ID;
 
 
     public function create(): bool

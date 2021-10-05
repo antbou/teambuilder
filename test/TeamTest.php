@@ -1,7 +1,6 @@
 <?php
 
-require "model/Team.php";
-
+use Teambuilder\model\Team;
 use PHPUnit\Framework\TestCase;
 
 class TeamTest extends TestCase
