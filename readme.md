@@ -7,3 +7,8 @@ L'ID de l'utilisateur se trouve en base de donnée
 ``
 define("USER_ID", 1);
 ``
+### Configuration Base de donnée
+- ```define("DBHOST", "TO_CHANGE");```
+- ```define("DBNAME", "TO_CHANGE");```
+- ```define("DBUSERNAME", "TO_CHANGE");```
+- ```define("DBPASSWORD", "TO_CHANGE");```

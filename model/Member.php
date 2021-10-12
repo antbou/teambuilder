@@ -70,6 +70,7 @@ class Member extends Model
     public function save(): bool
     {
         $check = DB::selectOne("SELECT * FROM members WHERE name = :name", ['name' => $this->name]);
+
         // si il n'est pas vide, alors return false, car le nom sera dupliqué
         if (!empty($check)) {
             return false;
@@ -95,9 +96,9 @@ class Member extends Model
 
     public function teams()
     {
-        $res = [];
         $res = DB::selectMany("SELECT teams.id, teams.name, teams.state_id FROM teams INNER JOIN team_member ON team_member.team_id = teams.id WHERE team_member.member_id = :id", ['id' => $this->id]);
         $teams = [];
+
         foreach ($res as $team) {
             $teams[] = Team::make(['id' => $team['id'], 'name' => $team['name'], 'state_id' => $team['state_id']]);
         }
