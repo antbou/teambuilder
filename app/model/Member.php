@@ -95,7 +95,7 @@ class Member extends Model
 
     public function teams()
     {
-        $res = DB::selectMany("SELECT teams.id, teams.name, teams.state_id FROM teams INNER JOIN team_member ON team_member.team_id = teams.id WHERE team_member.member_id = :id", ['id' => $this->id]);
+        $res = DB::selectMany("SELECT teams.id, teams.name, teams.state_id FROM teams INNER JOIN team_member ON team_member.team_id = teams.id WHERE team_member.member_id = :id ORDER BY teams.name ASC", ['id' => $this->id]);
         $teams = [];
 
         foreach ($res as $team) {
