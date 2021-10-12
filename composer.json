@@ -4,9 +4,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Teambuilder\\controller\\": "controller/",
-            "Teambuilder\\core\\": "core/",
-            "Teambuilder\\model\\": "model/"
+            "Teambuilder\\": "app/"
         }
     }
 }

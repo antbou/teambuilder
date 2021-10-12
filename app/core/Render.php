@@ -19,11 +19,11 @@ class Render
 
         // Toues les données suivantes seront sotckées dans un tampon temporaire 
         ob_start();
-        require('view/' . $path . '.html.php');
+        require('app/view/' . $path . '.html.php');
 
         // récupère le contenu du tampon puis l'efface
         $pageContent = ob_get_clean();
 
-        require('view/base.html.php');
+        require('app/view/base.html.php');
     }
 }
