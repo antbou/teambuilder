@@ -5,12 +5,18 @@ namespace Teambuilder\controller;
 use Exception;
 use Teambuilder\model\Team;
 use Teambuilder\core\Render;
+use Teambuilder\model\Member;
 
 class TeamController
 {
+    public function listAll()
+    {
+        Render::render('team/listAll', ['teams' => Team::all()]);
+    }
+
     public function list()
     {
-        Render::render('team/list', ['teams' => Team::all()]);
+        Render::render('team/list', ['teams' => Member::find(Member::DEFAULT)->teams()]);
     }
 
     public function show()

@@ -133,7 +133,7 @@ class Team extends Model
 
     public function members(): array
     {
-        $res = DB::selectMany("SELECT  members.id, members.name, members.role_id FROM members INNER JOIN team_member ON team_member.member_id = members.id WHERE team_member.team_id = :id", ['id' => $this->id]);
+        $res = DB::selectMany("SELECT members.id, members.name, members.role_id FROM members INNER JOIN team_member ON team_member.member_id = members.id WHERE team_member.team_id = :id", ['id' => $this->id]);
         $members = [];
 
         foreach ($res as $member) {
