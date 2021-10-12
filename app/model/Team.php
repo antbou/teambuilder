@@ -80,7 +80,7 @@ class Team extends Model
     {
         $res = [];
 
-        foreach (DB::selectMany("SELECT * FROM teams", []) as $index) {
+        foreach (DB::selectMany("SELECT * FROM teams ORDER BY teams.name ASC", []) as $index) {
             $res[] = self::make(['id' => $index['id'], 'name' => $index['name'], 'state_id' => $index['state_id']]);
         }
 
