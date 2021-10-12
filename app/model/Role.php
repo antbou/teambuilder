@@ -11,6 +11,8 @@ class Role extends Model
     public $slug;
     public $name;
 
+    const MODO = 2;
+
     static function make(array $fields): Role // create object, but no db record
     {
         $role = new Role();
@@ -66,5 +68,17 @@ class Role extends Model
         } catch (\PDOException $Exception) {
             return false;
         }
+    }
+
+    public function members()
+    {
+        $res = DB::selectMany("SELECT members.id, members.name, members.role_id FROM members WHERE members.role_id = :id ORDER BY members.name ASC", ['id' => $this->id]);
+        $members = [];
+
+        foreach ($res as $member) {
+            $members[] = Member::make(['id' => $member['id'], 'name' => $member['name'], 'role_id' => $member['role_id']]);
+        }
+
+        return $members;
     }
 }
