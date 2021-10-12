@@ -47,7 +47,7 @@ class Member extends Model
     {
         $res = [];
 
-        foreach (DB::selectMany("SELECT * FROM members", []) as $index) {
+        foreach (DB::selectMany("SELECT * FROM members ORDER BY members.name ASC", []) as $index) {
             $res[] = self::make(['id' => $index['id'], 'name' => $index['name'], 'role_id' => $index['role_id']]);
         }
 
