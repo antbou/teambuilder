@@ -4,6 +4,7 @@ namespace Teambuilder\model;
 
 use Teambuilder\model\DB;
 use Teambuilder\model\Model;
+use Teambuilder\model\Member;
 
 class Team extends Model
 {
@@ -63,11 +64,10 @@ class Team extends Model
         $res = DB::selectOne("SELECT * FROM teams where id = :id", ['id' => $id]);
 
         // Si le tableau ne contient pas l'index, return null
-        if (!isset($res[0])) {
+        if (!$res) {
             return null;
         }
 
-        $res = $res[0];
         return self::make(['id' => $res['id'], 'name' => $res['name'], 'state_id' => $res['state_id']]);
     }
 
@@ -80,7 +80,7 @@ class Team extends Model
     {
         $res = [];
 
-        foreach (DB::selectMany("SELECT * FROM teams", []) as $index) {
+        foreach (DB::selectMany("SELECT * FROM teams ORDER BY teams.name ASC", []) as $index) {
             $res[] = self::make(['id' => $index['id'], 'name' => $index['name'], 'state_id' => $index['state_id']]);
         }
 
@@ -129,5 +129,29 @@ class Team extends Model
         } catch (\Throwable $th) {
             return false;
         }
+    }
+
+    public function members(): array
+    {
+        $res = DB::selectMany("SELECT members.id, members.name, members.role_id FROM members INNER JOIN team_member ON team_member.member_id = members.id WHERE team_member.team_id = :id", ['id' => $this->id]);
+        $members = [];
+
+        foreach ($res as $member) {
+            $members[] = Member::make(['id' => $member['id'], 'name' => $member['name'], 'role_id' => $member['role_id']]);
+        }
+
+        return $members;
+    }
+
+    public function captain(): ?Member
+    {
+
+        $res = DB::selectOne("SELECT members.id, members.name, members.role_id FROM members INNER JOIN team_member ON team_member.member_id = members.id WHERE team_member.is_captain = 1 AND team_member.team_id = :id", ['id' => $this->id]);
+
+        if (!$res) {
+            return null;
+        }
+
+        return Member::make($res);
     }
 }

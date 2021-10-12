@@ -24,12 +24,17 @@ class DB
         return $result;
     }
 
-    public static function selectOne(string $query, array $params): array
+    public static function selectOne(string $query, array $params): ?array
     {
         $sth = self::getPdo()->prepare($query);
         $sth->execute($params);
 
-        $result = $sth->fetchAll();
+        $result = $sth->fetch();
+
+        if (!$result) {
+            return null;
+        }
+
         return $result;
     }
 

@@ -5,6 +5,6 @@
                 Teambuilder
             </a>
         </h1>
-        <p><?= $_SESSION['membre']->name ?></p>
+        <p>Connecté en tant que : <?= $_SESSION['membre']->name ?></p>
     </div>
 </div>

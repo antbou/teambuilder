@@ -58,12 +58,11 @@ class Member extends Model
     {
         $res = DB::selectOne("SELECT * FROM members where id = :id", ['id' => $id]);
 
-        // Si il n'y a rien, return null
-        if (!isset($res[0])) {
+        // Si le tableau ne contient pas l'index, return null
+        if (!$res) {
             return null;
         }
 
-        $res = $res[0];
         return self::make(['id' => $res['id'], 'name' => $res['name'], 'role_id' => $res['role_id']]);
     }
 
@@ -96,7 +95,7 @@ class Member extends Model
 
     public function teams()
     {
-        $res = DB::selectMany("SELECT teams.id, teams.name, teams.state_id FROM teams INNER JOIN team_member ON team_member.team_id = teams.id WHERE team_member.member_id = :id", ['id' => $this->id]);
+        $res = DB::selectMany("SELECT teams.id, teams.name, teams.state_id FROM teams INNER JOIN team_member ON team_member.team_id = teams.id WHERE team_member.member_id = :id ORDER BY teams.name ASC", ['id' => $this->id]);
         $teams = [];
 
         foreach ($res as $team) {
