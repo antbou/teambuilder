@@ -3,8 +3,6 @@
     <?php foreach ($modo as $member) : ?>
         <?= $member->name; ?>
 
-        <?php if (end($modo) !== $member) : ?>
-            ,
-        <?php endif ?>
+        <?= (end($modo) !== $member) ? ', ' : '' ?>
     <?php endforeach; ?>
 </div>
