@@ -21,8 +21,6 @@ if (!empty($_GET['task'])) {
     $task = $_GET['task'];
 }
 
-
-
 $controllerName = "Teambuilder\controller\\" . $controllerName . 'Controller';
 
 $controllerName = class_exists($controllerName) ? $controllerName : "Teambuilder\controller\\" . $defaultControllerName;

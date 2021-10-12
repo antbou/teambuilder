@@ -2,9 +2,11 @@
     <?php foreach ($teams as $team) :
         $i = 0;
     ?>
-        <b> <?= $team->name; ?></b>
+        <a href='/?controller=team&task=show&id=<?= $team->id ?>'><b> <?= $team->name; ?></b></a>
 
         <?= count($team->members()) ?>
+
+        <?= (isset($team->captain()->name)) ? $team->captain()->name : '' ?>
 
         <br>
     <?php endforeach; ?>
