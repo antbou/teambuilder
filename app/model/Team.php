@@ -4,6 +4,7 @@ namespace Teambuilder\model;
 
 use Teambuilder\model\DB;
 use Teambuilder\model\Model;
+use Teambuilder\model\Member;
 
 class Team extends Model
 {
@@ -129,5 +130,17 @@ class Team extends Model
         } catch (\Throwable $th) {
             return false;
         }
+    }
+
+    public function members()
+    {
+        $res = DB::selectMany("SELECT  members.id, members.name, members.role_id FROM members INNER JOIN team_member ON team_member.member_id = members.id WHERE team_member.team_id = :id", ['id' => $this->id]);
+        $members = [];
+
+        foreach ($res as $member) {
+            $members[] = Member::make(['id' => $member['id'], 'name' => $member['name'], 'role_id' => $member['role_id']]);
+        }
+
+        return $members;
     }
 }

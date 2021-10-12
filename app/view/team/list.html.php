@@ -4,6 +4,8 @@
     ?>
         <b> <?= $team->name; ?></b>
 
+        <?= count($team->members()) ?>
+
         <br>
     <?php endforeach; ?>
 </div>
