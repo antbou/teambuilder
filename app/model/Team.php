@@ -8,7 +8,7 @@ use Teambuilder\model\Member;
 
 class Team extends Model
 {
-    public $id = null;
+    public $id;
     public $name;
     public $state_id;
 
@@ -19,7 +19,6 @@ class Team extends Model
      */
     public function create(): bool
     {
-
         try {
             $this->id = DB::insert("INSERT INTO teams(name,state_id) VALUES (:name, :state_id)", ['name' => $this->name, 'state_id' => $this->state_id]);
             return true;
@@ -28,6 +27,14 @@ class Team extends Model
         }
     }
 
+    /**
+     * add a member to the team
+     *
+     * @param Member $member
+     * @param [type] $membershipType
+     * @param boolean $isCaptain
+     * @return boolean
+     */
     public function addMember(Member $member, int $membershipType = MembershipType::active, bool $isCaptain = false): bool
     {
         try {
@@ -43,7 +50,7 @@ class Team extends Model
     }
 
     /**
-     * Créé et return un objet Team
+     * Create and return a Team object
      *
      * @param integer $id
      * @param string $name
@@ -54,10 +61,7 @@ class Team extends Model
     {
         $team = new Team();
 
-        if (isset($params['id'])) {
-            $team->id = $params['id'];
-        }
-
+        $team->id = (isset($params['id'])) ? $params['id'] : null;
         $team->name = $params['name'];
         $team->state_id = $params['state_id'];
 
@@ -65,7 +69,7 @@ class Team extends Model
     }
 
     /**
-     * Créé un objet à partir des données récupérées de la base de données identifiée par l'ID de l'objet souhaité
+     * Create an object from the data retrieved from the database identified by the ID of the desired object
      *
      * @param integer $id
      * @return Team|null
@@ -74,16 +78,11 @@ class Team extends Model
     {
         $res = DB::selectOne("SELECT * FROM teams where id = :id", ['id' => $id]);
 
-        // Si le tableau ne contient pas l'index, return null
-        if (!$res) {
-            return null;
-        }
-
-        return self::make(['id' => $res['id'], 'name' => $res['name'], 'state_id' => $res['state_id']]);
+        return ($res) ? self::make($res) : null;
     }
 
     /**
-     * Retourne un tableau d'objet teams
+     * return all teams
      *
      * @return array
      */
@@ -91,21 +90,21 @@ class Team extends Model
     {
         $res = [];
 
-        foreach (DB::selectMany("SELECT * FROM teams ORDER BY teams.name ASC", []) as $index) {
-            $res[] = self::make(['id' => $index['id'], 'name' => $index['name'], 'state_id' => $index['state_id']]);
+        // Create an array of objects
+        foreach (DB::selectMany("SELECT * FROM teams ORDER BY teams.name ASC", []) as $team) {
+            $res[] = self::make($team);
         }
 
         return $res;
     }
 
     /**
-     * Enregistre l'objet en base de donnée
+     * Stores the object in the database
      *
      * @return boolean
      */
     public function save(): bool
     {
-
         try {
             return DB::execute("UPDATE teams set name = :name, state_id = :state_id WHERE id = :id", ['id' => $this->id, 'name' => $this->name, 'state_id' => $this->state_id]);
         } catch (\Throwable $th) {
@@ -114,7 +113,7 @@ class Team extends Model
     }
 
     /**
-     * Supprime l'objet de la base de données
+     * Removes the object from the database
      *
      * @return boolean
      */
@@ -124,7 +123,7 @@ class Team extends Model
     }
 
     /**
-     * Supprime un objet de la base de donnée via son ID
+     * Delete an object from the database via its ID
      *
      * @param integer $id
      * @return boolean
@@ -139,27 +138,34 @@ class Team extends Model
         }
     }
 
+    /**
+     * Gets all the team members
+     *
+     * @return array
+     */
     public function members(): array
     {
         $res = DB::selectMany("SELECT members.id, members.name, members.role_id FROM members INNER JOIN team_member ON team_member.member_id = members.id WHERE team_member.team_id = :id", ['id' => $this->id]);
         $members = [];
 
+        // Create an array of objects
         foreach ($res as $member) {
-            $members[] = Member::make(['id' => $member['id'], 'name' => $member['name'], 'role_id' => $member['role_id']]);
+            $members[] = Member::make($member);
         }
 
         return $members;
     }
 
+    /**
+     * Gets the team's captain
+     *
+     * @return Member|null
+     */
     public function captain(): ?Member
     {
 
         $res = DB::selectOne("SELECT members.id, members.name, members.role_id FROM members INNER JOIN team_member ON team_member.member_id = members.id WHERE team_member.is_captain = 1 AND team_member.team_id = :id", ['id' => $this->id]);
 
-        if (!$res) {
-            return null;
-        }
-
-        return Member::make($res);
+        return ($res) ? Member::make($res) : null;
     }
 }

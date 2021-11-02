@@ -16,7 +16,7 @@ class Role extends Model
     static function make(array $fields): Role // create object, but no db record
     {
         $role = new Role();
-        $role->id = $fields["id"];
+        $role->id = (isset($fields['id'])) ? $fields['id'] : null;
         $role->slug = $fields["slug"];
         $role->name = $fields["name"];
         return $role;
@@ -39,8 +39,14 @@ class Role extends Model
 
     static function all(): array
     {
+        $res = [];
 
-        return DB::selectMany("SELECT * FROM roles", []);;
+        // Create an array of objects
+        foreach (DB::selectMany("SELECT * FROM roles", []) as $role) {
+            $res[] = self::make($role);
+        }
+
+        return $res;
     }
 
     public function save(): bool

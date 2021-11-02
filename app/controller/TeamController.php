@@ -2,13 +2,12 @@
 
 namespace Teambuilder\controller;
 
-
 use Teambuilder\model\Team;
 use Teambuilder\model\Member;
 use Teambuilder\core\form\Field;
 use Teambuilder\core\service\Http;
 use Teambuilder\core\form\FormValidator;
-
+use Teambuilder\model\State;
 
 class TeamController extends AbstractController
 {
@@ -49,7 +48,7 @@ class TeamController extends AbstractController
             $team = Team::make(
                 [
                     'name' => $form->getFields()['title']->value,
-                    'state_id' => 1
+                    'state_id' => State::find(['slug' => 'WAIT_CHANG'])->id
                 ]
             );
 

@@ -1,10 +1,12 @@
 <div class="container">
     <?php foreach ($members as $member) : ?>
         <b> <?= $member->name; ?></b>
-        <?php foreach ($member->teams() as $team) : ?>
+        <?php
+        $teams = $member->teams();
+        foreach ($teams as $team) :
+        ?>
             <i><?= $team->name; ?></i>
-
-            <?= (end($member->teams())->id !== $team->id) ? ', ' : '' ?>
+            <?= (end($teams) !== $team) ? ', ' : '' ?>
         <?php endforeach; ?>
         <br>
     <?php endforeach; ?>
