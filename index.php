@@ -6,31 +6,18 @@ use Teambuilder\core\service\Authenticator;
 require('vendor/autoload.php');
 
 session_start();
-
 Authenticator::autologin();
 
-$defaultControllerName = "HomeController";
-$controllerName = null;
-
+$controller = 'Home';
 $task = 'index';
-$defaultTask = "index";
 
-if (!empty($_GET['controller'])) {
-    $controllerName = ucfirst($_GET['controller']);
-}
+$controller = (empty($_GET['controller'])) ? $controller : ucfirst($_GET['controller']);
+$task = (empty($_GET['task'])) ? $task : lcfirst($_GET['task']);
 
-if (!empty($_GET['task'])) {
-    $task = $_GET['task'];
-}
+$controller = ("Teambuilder\controller\\" . $controller . 'Controller');
 
-$controllerName = "Teambuilder\controller\\" . $controllerName . 'Controller';
-
-$controllerName = class_exists($controllerName) ? $controllerName : "Teambuilder\controller\\" . $defaultControllerName;
-
-$controller = new $controllerName();
-
-if (!method_exists($controller, $task)) {
+if (!class_exists($controller) || !method_exists($controller, $task)) {
     Http::notFoundException();
-} else {
-    $controller->$task();
 }
+$controller = new $controller();
+$controller->$task();
