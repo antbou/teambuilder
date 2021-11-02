@@ -43,13 +43,14 @@ class TeamController extends AbstractController
         $form = new FormValidator('team');
         $form->addField(['title' => new Field('title', 'string', false)]);
 
-
         if ($form->process() && $this->csrfValidator()) {
 
+            // TO DO : Team::Build
             $team = new Team();
             $team->name = $form->getFields()['title']->value;
             $team->state_id = 1;
 
+            // remake addMember (not static)
             if ($team->create() && Team::addMember(['member_id' => $_SESSION['member']->id, 'team_id' => $team->id, 'membership_type' => 1, 'is_captain' => 1])) {
                 Http::redirectToUrl("/?controller=team&task=show&id=$team->id");
             } else {

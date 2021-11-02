@@ -7,6 +7,8 @@ use Teambuilder\core\services\Autologin;
 require('vendor/autoload.php');
 
 session_start();
+
+// rename autologin
 Autologin::login();
 
 $defaultControllerName = "HomeController";
