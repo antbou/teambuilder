@@ -1,8 +1,8 @@
 <?php
 
-use Teambuilder\core\Render;
-use Teambuilder\core\Autologin;
+
 use Teambuilder\core\services\Http;
+use Teambuilder\core\services\Autologin;
 
 require('vendor/autoload.php');
 
