@@ -28,28 +28,6 @@ class Team extends Model
     }
 
     /**
-     * add a member to the team
-     *
-     * @param Member $member
-     * @param [type] $membershipType
-     * @param boolean $isCaptain
-     * @return boolean
-     */
-    public function addMember(Member $member, int $membershipType = MembershipType::active, bool $isCaptain = false): bool
-    {
-        try {
-            return DB::insert('INSERT INTO teambuilder.team_member (member_id, team_id, membership_type, is_captain) VALUES (:member_id, :team_id, :membership_type, :is_captain)', [
-                'member_id' => $member->id,
-                'team_id' => $this->id,
-                'membership_type' => $membershipType,
-                'is_captain' => +$isCaptain
-            ]);
-        } catch (\Throwable $th) {
-            return false;
-        }
-    }
-
-    /**
      * Create and return a Team object
      *
      * @param integer $id
@@ -167,5 +145,27 @@ class Team extends Model
         $res = DB::selectOne("SELECT members.id, members.name, members.role_id FROM members INNER JOIN team_member ON team_member.member_id = members.id WHERE team_member.is_captain = 1 AND team_member.team_id = :id", ['id' => $this->id]);
 
         return ($res) ? Member::make($res) : null;
+    }
+
+    /**
+     * add a member to the team
+     *
+     * @param Member $member
+     * @param [type] $membershipType
+     * @param boolean $isCaptain
+     * @return boolean
+     */
+    public function addMember(Member $member, int $membershipType = MembershipType::active, bool $isCaptain = false): bool
+    {
+        try {
+            return DB::insert('INSERT INTO teambuilder.team_member (member_id, team_id, membership_type, is_captain) VALUES (:member_id, :team_id, :membership_type, :is_captain)', [
+                'member_id' => $member->id,
+                'team_id' => $this->id,
+                'membership_type' => $membershipType,
+                'is_captain' => +$isCaptain
+            ]);
+        } catch (\Throwable $th) {
+            return false;
+        }
     }
 }
