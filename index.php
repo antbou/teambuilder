@@ -1,6 +1,8 @@
 <?php
 
-use Teambuilder\core\Autologin;
+
+use Teambuilder\core\services\Http;
+use Teambuilder\core\services\Autologin;
 
 require('vendor/autoload.php');
 
@@ -26,4 +28,9 @@ $controllerName = "Teambuilder\controller\\" . $controllerName . 'Controller';
 $controllerName = class_exists($controllerName) ? $controllerName : "Teambuilder\controller\\" . $defaultControllerName;
 
 $controller = new $controllerName();
+
+if (!method_exists($controller, $task)) {
+    Http::notFoundException();
+}
+
 $controller->$task();

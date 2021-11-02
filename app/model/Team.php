@@ -31,6 +31,28 @@ class Team extends Model
         return true;
     }
 
+    public static function addMember(array $params): bool
+    {
+        $check = DB::selectOne("SELECT * FROM teambuilder.team_member WHERE member_id = :member_id and team_id = :team_id and membership_type = :membership_type and is_captain = :is_captain", [
+            'member_id' => $params['member_id'],
+            'team_id' => $params['team_id'],
+            'membership_type' => $params['membership_type'],
+            'is_captain' => $params['is_captain']
+        ]);
+
+        // Si "name" existe, alors return false
+        if (!empty($check)) {
+            return false;
+        }
+
+        return DB::insert('INSERT INTO teambuilder.team_member (member_id, team_id, membership_type, is_captain) VALUES (:member_id, :team_id, :membership_type, :is_captain)', [
+            'member_id' => $params['member_id'],
+            'team_id' => $params['team_id'],
+            'membership_type' => $params['membership_type'],
+            'is_captain' => $params['is_captain']
+        ]);
+    }
+
     /**
      * Créé et return un objet Team
      *
