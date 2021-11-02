@@ -1,6 +1,7 @@
 <?php
 
 use Teambuilder\model\Team;
+use Teambuilder\model\Member;
 use PHPUnit\Framework\TestCase;
 
 class TeamTest extends TestCase
@@ -85,14 +86,14 @@ class TeamTest extends TestCase
         $this->assertNull(Team::find($id)); // we should not find it back
     }
 
-    // /**
-    //  * Assume the well-know dataset of 'teambuilder.sql'
-    //  * @covers $member->teams()
-    //  */
-    // public function testTeams()
-    // {
-    //     $this->assertEquals(1, count(Member::find(3)->teams()));
-    //     $this->assertEquals(0, count(Member::find(9)->teams()));
-    //     $this->assertEquals(3, count(Member::find(10)->teams()));
-    // }
+    /**
+     * Assume the well-know dataset of 'teambuilder.sql'
+     * @covers $member->teams()
+     */
+    public function testTeams()
+    {
+        $this->assertEquals(1, count(Member::find(3)->teams()));
+        $this->assertEquals(0, count(Member::find(9)->teams()));
+        $this->assertEquals(3, count(Member::find(10)->teams()));
+    }
 }
