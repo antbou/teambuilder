@@ -3,4 +3,5 @@
     <a href="?controller=team&task=list">Liste de mes équipes</a> <br>
     <a href="?controller=team&task=listAll">Liste de toutes les équipes</a><br>
     <a href="?controller=moderator&task=showAll">Liste des modo</a><br>
+    <a href="?controller=team&task=create">Créer une équipe</a><br>
 </div>

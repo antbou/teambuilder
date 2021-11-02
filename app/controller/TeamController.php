@@ -37,6 +37,6 @@ class TeamController
 
     public function create()
     {
-        Render::render('team/createTeam');
+        Render::render('team/createTeam', hasForm: true);
     }
 }
