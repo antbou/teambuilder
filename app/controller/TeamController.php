@@ -41,13 +41,13 @@ class TeamController extends AbstractController
     {
 
         $form = new FormValidator('team');
-        $form->addField(['title' => new Field('title', string::class, false)]);
+        $form->addField(['title' => new Field('title', 'string', false)]);
 
         // En cas d'erreur
-        if ($form->process() || $this->csrfValidator()) {
+        if ($form->process() && $this->csrfValidator()) {
         }
 
 
-        Render::render('team/createTeam', hasForm: true);
+        Render::render('team/createTeam', ['fields' => $form->getFields()], true);
     }
 }

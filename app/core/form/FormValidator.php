@@ -29,9 +29,7 @@ class FormValidator
         if (!$this->isPostValid()) {
             return false;
         }
-
         $res = true;
-
         foreach ($this->fields as $field) {
 
             $checkType = 'is' . ucfirst($field->type);
@@ -42,6 +40,7 @@ class FormValidator
              * Le champs n'est pas vide ou accepte d'être vide
              */
             if (!$this->isSet($field) || !$this->isNotEmpty($field) || !$this->$checkType($field)) {
+
                 $res = false;
                 continue;
             }

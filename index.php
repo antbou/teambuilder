@@ -27,9 +27,10 @@ $controllerName = "Teambuilder\controller\\" . $controllerName . 'Controller';
 $controllerName = class_exists($controllerName) ? $controllerName : "Teambuilder\controller\\" . $defaultControllerName;
 
 $controller = new $controllerName();
-try {
-    $controller->$task();
-} catch (\Throwable $th) {
+
+if (!method_exists($controller, $task)) {
     http_response_code(404);
     Render::render('errors/404');
 }
+
+$controller->$task();
