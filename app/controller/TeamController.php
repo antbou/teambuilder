@@ -32,6 +32,11 @@ class TeamController
             $id = 1;
         }
 
-        Render::render('team/show', ['team' => Team::find($id)]);
+        Render::render('team/showTeam', ['team' => Team::find($id)]);
+    }
+
+    public function create()
+    {
+        Render::render('team/createTeam');
     }
 }

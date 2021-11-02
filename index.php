@@ -1,5 +1,6 @@
 <?php
 
+use Teambuilder\core\Render;
 use Teambuilder\core\Autologin;
 
 require('vendor/autoload.php');
@@ -26,4 +27,9 @@ $controllerName = "Teambuilder\controller\\" . $controllerName . 'Controller';
 $controllerName = class_exists($controllerName) ? $controllerName : "Teambuilder\controller\\" . $defaultControllerName;
 
 $controller = new $controllerName();
-$controller->$task();
+try {
+    $controller->$task();
+} catch (\Throwable $th) {
+    http_response_code(404);
+    Render::render('errors/404');
+}
