@@ -8,7 +8,7 @@ use Teambuilder\model\Model;
 
 class Member extends Model
 {
-    public $id = null;
+    public $id;
     public $name;
     public $password;
     public $role_id;
@@ -54,6 +54,17 @@ class Member extends Model
         return ($res) ? self::make($res) : null;
     }
 
+    public static function where(string $param, $value): array
+    {
+        $res = [];
+
+        foreach (DB::selectMany("SELECT * FROM members where $param = :$param", [$param => $value]) as $member) {
+            $res[] = self::make($member);
+        }
+
+        return $res;
+    }
+
     public function save(): bool
     {
         try {
@@ -68,7 +79,7 @@ class Member extends Model
         return self::destroy($this->id);
     }
 
-    static function destroy(int $id): bool
+    public static function destroy(int $id): bool
     {
         try {
             DB::execute("DELETE FROM members WHERE id = :id", ['id' => $id]);
@@ -78,7 +89,7 @@ class Member extends Model
         }
     }
 
-    public function teams()
+    public function teams(): array
     {
         $teams = [];
 
