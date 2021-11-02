@@ -1,8 +1,9 @@
 <?php
 
-namespace Teambuilder\core\services;
+namespace Teambuilder\core\service;
 
-use Teambuilder\core\services\Render;
+use Teambuilder\core\service\Render;
+
 
 class Http
 {

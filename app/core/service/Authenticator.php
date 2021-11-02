@@ -1,12 +1,12 @@
 <?php
 
-namespace Teambuilder\core\services;
+namespace Teambuilder\core\service;
 
 use Teambuilder\model\Member;
 
-class Autologin
+class Authenticator
 {
-    static public function login()
+    static public function autologin()
     {
         $_SESSION['member'] = Member::find(Member::DEFAULT);
     }

@@ -1,15 +1,13 @@
 <?php
 
-
-use Teambuilder\core\services\Http;
-use Teambuilder\core\services\Autologin;
+use Teambuilder\core\service\Http;
+use Teambuilder\core\service\Authenticator;
 
 require('vendor/autoload.php');
 
 session_start();
 
-// rename autologin
-Autologin::login();
+Authenticator::autologin();
 
 $defaultControllerName = "HomeController";
 $controllerName = null;

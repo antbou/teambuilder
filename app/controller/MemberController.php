@@ -3,7 +3,7 @@
 namespace Teambuilder\controller;
 
 use Teambuilder\model\Member;
-use Teambuilder\core\services\Http;
+use Teambuilder\core\service\Http;
 use Teambuilder\controller\AbstractController;
 
 class MemberController extends AbstractController

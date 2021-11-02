@@ -3,7 +3,7 @@
 namespace Teambuilder\controller;
 
 use Teambuilder\model\Role;
-use Teambuilder\core\services\Http;
+use Teambuilder\core\service\Http;
 
 class ModeratorController
 {

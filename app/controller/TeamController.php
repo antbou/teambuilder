@@ -6,8 +6,9 @@ namespace Teambuilder\controller;
 use Teambuilder\model\Team;
 use Teambuilder\model\Member;
 use Teambuilder\core\form\Field;
+use Teambuilder\core\service\Http;
 use Teambuilder\core\form\FormValidator;
-use Teambuilder\core\services\Http;
+
 
 class TeamController extends AbstractController
 {

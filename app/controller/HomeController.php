@@ -2,7 +2,7 @@
 
 namespace Teambuilder\controller;
 
-use Teambuilder\core\services\Http;
+use Teambuilder\core\service\Http;
 use Teambuilder\controller\AbstractController;
 
 class HomeController extends AbstractController

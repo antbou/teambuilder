@@ -1,6 +1,6 @@
 <?php
 
-namespace Teambuilder\core\services;
+namespace Teambuilder\core\service;
 
 class Render
 {
