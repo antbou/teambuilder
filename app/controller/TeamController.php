@@ -2,23 +2,24 @@
 
 namespace Teambuilder\controller;
 
-use Exception;
+
 use Teambuilder\model\Team;
-use Teambuilder\core\Render;
 use Teambuilder\model\Member;
 use Teambuilder\core\form\Field;
+use Teambuilder\core\services\Render;
 use Teambuilder\core\form\FormValidator;
+use Teambuilder\core\services\Http;
 
 class TeamController extends AbstractController
 {
     public function listAll()
     {
-        Render::render('team/listAll', ['teams' => Team::all()]);
+        Http::response('team/listAll', ['teams' => Team::all()]);
     }
 
     public function list()
     {
-        Render::render('team/list', ['teams' => Member::find(Member::DEFAULT)->teams()]);
+        Http::response('team/list', ['teams' => Member::find(Member::DEFAULT)->teams()]);
     }
 
     public function show()
@@ -34,12 +35,11 @@ class TeamController extends AbstractController
             $id = 1;
         }
 
-        Render::render('team/showTeam', ['team' => Team::find($id)]);
+        Http::response('team/showTeam', ['team' => Team::find($id)]);
     }
 
     public function create()
     {
-
         $form = new FormValidator('team');
         $form->addField(['title' => new Field('title', 'string', false)]);
 
@@ -48,6 +48,6 @@ class TeamController extends AbstractController
         }
 
 
-        Render::render('team/createTeam', ['fields' => $form->getFields()], true);
+        Http::response('team/createTeam', ['fields' => $form->getFields()], true);
     }
 }

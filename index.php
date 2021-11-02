@@ -2,6 +2,7 @@
 
 use Teambuilder\core\Render;
 use Teambuilder\core\Autologin;
+use Teambuilder\core\services\Http;
 
 require('vendor/autoload.php');
 
@@ -29,8 +30,7 @@ $controllerName = class_exists($controllerName) ? $controllerName : "Teambuilder
 $controller = new $controllerName();
 
 if (!method_exists($controller, $task)) {
-    http_response_code(404);
-    Render::render('errors/404');
+    Http::notFoundException();
 }
 
 $controller->$task();
