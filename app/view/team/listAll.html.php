@@ -1,7 +1,5 @@
 <div class="container">
-    <?php foreach ($teams as $team) :
-        $i = 0;
-    ?>
+    <?php foreach ($teams as $team) : ?>
         <a href='/?controller=team&task=show&id=<?= $team->id ?>'><b> <?= $team->name; ?></b></a>
 
         <?= count($team->members()) ?>
