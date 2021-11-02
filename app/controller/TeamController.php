@@ -6,8 +6,10 @@ use Exception;
 use Teambuilder\model\Team;
 use Teambuilder\core\Render;
 use Teambuilder\model\Member;
+use Teambuilder\core\form\Field;
+use Teambuilder\core\form\FormValidator;
 
-class TeamController
+class TeamController extends AbstractController
 {
     public function listAll()
     {
@@ -37,6 +39,15 @@ class TeamController
 
     public function create()
     {
+
+        $form = new FormValidator('team');
+        $form->addField(['title' => new Field('title', string::class, false)]);
+
+        // En cas d'erreur
+        if ($form->process() || $this->csrfValidator()) {
+        }
+
+
         Render::render('team/createTeam', hasForm: true);
     }
 }
