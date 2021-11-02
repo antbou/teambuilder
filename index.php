@@ -31,6 +31,6 @@ $controller = new $controllerName();
 
 if (!method_exists($controller, $task)) {
     Http::notFoundException();
+} else {
+    $controller->$task();
 }
-
-$controller->$task();
