@@ -1,11 +1,13 @@
 <?php
 
-use Teambuilder\core\Autologin;
+use Teambuilder\core\service\Http;
+use Teambuilder\core\service\Authenticator;
 
 require('vendor/autoload.php');
 
 session_start();
-Autologin::login();
+
+Authenticator::autologin();
 
 $defaultControllerName = "HomeController";
 $controllerName = null;
@@ -21,11 +23,14 @@ if (!empty($_GET['task'])) {
     $task = $_GET['task'];
 }
 
-
-
 $controllerName = "Teambuilder\controller\\" . $controllerName . 'Controller';
 
 $controllerName = class_exists($controllerName) ? $controllerName : "Teambuilder\controller\\" . $defaultControllerName;
 
 $controller = new $controllerName();
-$controller->$task();
+
+if (!method_exists($controller, $task)) {
+    Http::notFoundException();
+} else {
+    $controller->$task();
+}

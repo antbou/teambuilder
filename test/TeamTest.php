@@ -1,6 +1,7 @@
 <?php
 
 use Teambuilder\model\Team;
+use Teambuilder\model\Member;
 use PHPUnit\Framework\TestCase;
 
 class TeamTest extends TestCase
@@ -85,14 +86,52 @@ class TeamTest extends TestCase
         $this->assertNull(Team::find($id)); // we should not find it back
     }
 
-    // /**
-    //  * Assume the well-know dataset of 'teambuilder.sql'
-    //  * @covers $member->teams()
-    //  */
-    // public function testTeams()
-    // {
-    //     $this->assertEquals(1, count(Member::find(3)->teams()));
-    //     $this->assertEquals(0, count(Member::find(9)->teams()));
-    //     $this->assertEquals(3, count(Member::find(10)->teams()));
-    // }
+    /**
+     * Assume the well-know dataset of 'teambuilder.sql'
+     * @covers $member->teams()
+     */
+    public function testTeams()
+    {
+        $this->assertEquals(1, count(Member::find(3)->teams()));
+        $this->assertEquals(0, count(Member::find(9)->teams()));
+        $this->assertEquals(3, count(Member::find(10)->teams()));
+    }
+
+    /**
+     * Assume the well-know dataset of 'teambuilder.sql'
+     * @covers $team->members()
+     */
+    public function testMembers()
+    {
+        $this->assertEquals(3, count(Team::find(5)->members()));
+        $this->assertEquals(0, count(Team::find(16)->members()));
+        $this->assertEquals(4, count(Team::find(1)->members()));
+    }
+
+    /**
+     * Assume the well-know dataset of 'teambuilder.sql'
+     * @covers $team->captain()
+     */
+    public function testCaptain()
+    {
+        $team = Team::make(["name" => "dummy", "state_id" => 1]);
+        $team->create();
+        $this->assertNull($team->captain());
+        $this->assertEquals(Member::find(19), Team::find(15)->captain());
+        $this->assertTrue($team->delete()); // expected to succeed
+    }
+
+    /**
+     * Assume the well-know dataset of 'teambuilder.sql'
+     * @covers $team->addMember()
+     */
+    public function testAddMember()
+    {
+        $team = Team::make(["name" => "dummy", "state_id" => 1]);
+        $team->create();
+        $this->assertEquals(0, count($team->members()));
+        $this->assertTrue($team->addMember(member::find(1)));
+        $this->assertFalse($team->addMember(member::find(1)));
+        $this->assertEquals(1, count($team->members()));
+    }
 }

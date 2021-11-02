@@ -2,13 +2,13 @@
 
 namespace Teambuilder\controller;
 
+use Teambuilder\core\service\Http;
 use Teambuilder\controller\AbstractController;
-use Teambuilder\core\Render;
 
 class HomeController extends AbstractController
 {
     public function index()
     {
-        Render::render('home/index');
+        Http::response('home/index');
     }
 }

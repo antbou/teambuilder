@@ -10,6 +10,7 @@
 </head>
 
 <body>
+    <?php include('_header.html.php'); ?>
     <?= $pageContent ?>
 </body>
 
