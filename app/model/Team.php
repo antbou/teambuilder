@@ -13,44 +13,33 @@ class Team extends Model
     public $state_id;
 
     /**
-     * sauvegarde l'objet en bdd
+     * save object to db
      *
-     * @return void
+     * @return boolean
      */
     public function create(): bool
     {
-        $check = DB::selectOne("SELECT * FROM teams WHERE NAME = :name", ['name' => $this->name]);
 
-        // Si "name" existe, alors return false
-        if (!empty($check)) {
+        try {
+            $this->id = DB::insert("INSERT INTO teams(name,state_id) VALUES (:name, :state_id)", ['name' => $this->name, 'state_id' => $this->state_id]);
+            return true;
+        } catch (\Throwable $th) {
             return false;
         }
-
-        $this->id = DB::insert("INSERT INTO teams(name,state_id) VALUES (:name, :state_id)", ['name' => $this->name, 'state_id' => $this->state_id]);
-
-        return true;
     }
 
-    public static function addMember(array $params): bool
+    public function addMember(Member $member, int $membershipType = MembershipType::active, bool $isCaptain = false): bool
     {
-        $check = DB::selectOne("SELECT * FROM teambuilder.team_member WHERE member_id = :member_id and team_id = :team_id and membership_type = :membership_type and is_captain = :is_captain", [
-            'member_id' => $params['member_id'],
-            'team_id' => $params['team_id'],
-            'membership_type' => $params['membership_type'],
-            'is_captain' => $params['is_captain']
-        ]);
-
-        // Si "name" existe, alors return false
-        if (!empty($check)) {
+        try {
+            return DB::insert('INSERT INTO teambuilder.team_member (member_id, team_id, membership_type, is_captain) VALUES (:member_id, :team_id, :membership_type, :is_captain)', [
+                'member_id' => $member->id,
+                'team_id' => $this->id,
+                'membership_type' => $membershipType,
+                'is_captain' => +$isCaptain
+            ]);
+        } catch (\Throwable $th) {
             return false;
         }
-
-        return DB::insert('INSERT INTO teambuilder.team_member (member_id, team_id, membership_type, is_captain) VALUES (:member_id, :team_id, :membership_type, :is_captain)', [
-            'member_id' => $params['member_id'],
-            'team_id' => $params['team_id'],
-            'membership_type' => $params['membership_type'],
-            'is_captain' => $params['is_captain']
-        ]);
     }
 
     /**
@@ -117,14 +106,11 @@ class Team extends Model
     public function save(): bool
     {
 
-        $check = DB::selectOne("SELECT * FROM teams WHERE NAME = :name", ['name' => $this->name]);
-
-        // si le tableau n'est pas vide, alors return false car le nom sera dupliqué
-        if (!empty($check)) {
+        try {
+            return DB::execute("UPDATE teams set name = :name, state_id = :state_id WHERE id = :id", ['id' => $this->id, 'name' => $this->name, 'state_id' => $this->state_id]);
+        } catch (\Throwable $th) {
             return false;
         }
-
-        return DB::execute("UPDATE teams set name = :name, state_id = :state_id WHERE id = :id", ['id' => $this->id, 'name' => $this->name, 'state_id' => $this->state_id]);
     }
 
     /**

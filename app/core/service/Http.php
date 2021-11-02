@@ -20,7 +20,7 @@ class Http
         exit();
     }
 
-    public static function response(string $path, array $variables = [], int $responseCode = 200, bool $hasForm = false): void
+    public static function response(string $path, array $variables = [], bool $hasForm = false, int $responseCode = 200): void
     {
         http_response_code($responseCode);
         Render::render($path, $variables, $hasForm);

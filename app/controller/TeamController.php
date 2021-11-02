@@ -46,13 +46,14 @@ class TeamController extends AbstractController
 
         if ($form->process() && $this->csrfValidator()) {
 
-            // TO DO : Team::Build
-            $team = new Team();
-            $team->name = $form->getFields()['title']->value;
-            $team->state_id = 1;
+            $team = Team::make(
+                [
+                    'name' => $form->getFields()['title']->value,
+                    'state_id' => 1
+                ]
+            );
 
-            // remake addMember (not static)
-            if ($team->create() && Team::addMember(['member_id' => $_SESSION['member']->id, 'team_id' => $team->id, 'membership_type' => 1, 'is_captain' => 1])) {
+            if ($team->create() && $team->addMember($_SESSION['member'], isCaptain: true)) {
                 Http::redirectToUrl("/?controller=team&task=show&id=$team->id");
             } else {
                 $form->getFields()['title']->error = "Cette équipe existe déjà !";
