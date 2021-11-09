@@ -3,16 +3,30 @@
 namespace Teambuilder\model;
 
 use PDO;
+use PDOException;
 
 class DB
 {
 
+    private static $instance = null;
+
+    /**
+     * Returns a connection to the database
+     * 
+     * @return PDO
+     */
     public static function getPdo(): PDO
     {
-        require_once('.env.php');
-        return new PDO('mysql:host=' . DBHOST . ';dbname=' . DBNAME . ';charset=utf8', DBUSERNAME, DBPASSWORD, [
-            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
-        ]);
+        try {
+            if (self::$instance === null) {
+                require_once('.env.php');
+                self::$instance = new PDO('mysql:host=' . DBHOST . ';dbname=' . DBNAME . ';charset=utf8', DBUSERNAME, DBPASSWORD);
+            }
+            return self::$instance;
+        } catch (PDOException $e) { // in case of error for the debug
+            echo 'Connection failure : ' . $e->getMessage();
+            exit;
+        }
     }
 
     public static function selectMany(string $query, array $params): array
