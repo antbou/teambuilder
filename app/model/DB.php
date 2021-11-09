@@ -34,22 +34,16 @@ class DB
         $sth = self::getPdo()->prepare($query);
         $sth->execute($params);
 
-        $result = $sth->fetchAll();
-        return $result;
+        return $sth->fetchAll();
     }
 
     public static function selectOne(string $query, array $params): ?array
     {
         $sth = self::getPdo()->prepare($query);
         $sth->execute($params);
-
         $result = $sth->fetch();
 
-        if (!$result) {
-            return null;
-        }
-
-        return $result;
+        return ($result) ? $result : null;
     }
 
     public static function insert(string $query, array $params): int
@@ -58,15 +52,13 @@ class DB
         $sth = $db->prepare($query);
         $sth->execute($params);
 
-        $result = $db->lastInsertId();
-        return $result;
+        return $db->lastInsertId();
     }
 
     public static function execute(string $query, array $params): bool
     {
         $db = self::getPdo();
         $sth = $db->prepare($query);
-        $sth->execute($params);
 
         return $sth->execute($params);
     }
