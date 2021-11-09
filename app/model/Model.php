@@ -3,15 +3,23 @@
 namespace Teambuilder\model;
 
 use Teambuilder\model\traits\Children;
+use Teambuilder\model\traits\Table;
 
 require('./.env.php');
 
 abstract class Model
 {
     use Children;
+    use Table;
 
-    protected $table;
     public $id;
+    private static $table;
+
+    public function __construct()
+    {
+        self::$table = self::getShortName(get_called_class());
+    }
+
 
     /**
      * create db record from object
@@ -30,7 +38,7 @@ abstract class Model
 
         $fields = implode(',', $fields);
         $fieldsBind = implode(',', $fieldsBind);
-        $query = "INSERT INTO {$this->table} ($fields) VALUES ($fieldsBind)";
+        $query = "INSERT INTO " . self::$table . " ($fields) VALUES ($fieldsBind)";
 
         try {
             $this->id = DB::insert($query, $this->toArray());
@@ -45,10 +53,10 @@ abstract class Model
      *
      * @return boolean
      */
-    public function delete(): bool
+    public static function destroy(int $id): bool
     {
         try {
-            DB::execute("DELETE FROM {$this->table} WHERE id = :id", ['id' => $this->id]);
+            DB::execute("DELETE FROM " . self::$table . " WHERE id = :id", ['id' => $id]);
             return true;
         } catch (\PDOException $Exception) {
             return false;
@@ -56,11 +64,21 @@ abstract class Model
     }
 
     /**
+     * Removes the object from the database
+     *
+     * @return boolean
+     */
+    public function delete(): bool
+    {
+        return self::destroy($this->id);
+    }
+
+    /**
      * update the object in the database
      *
      * @return boolean
      */
-    public function update(): bool
+    public function save(): bool
     {
         $fields  = [];
 
@@ -73,7 +91,7 @@ abstract class Model
 
         $fields = implode(',', $fields);
 
-        $query = "UPDATE {$this->table} SET $fields WHERE id=:id";
+        $query = "UPDATE " . self::$table . " SET $fields WHERE id=:id";
 
         try {
             return DB::execute($query, $this->toArray());
