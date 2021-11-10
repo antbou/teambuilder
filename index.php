@@ -11,8 +11,8 @@ Authenticator::autologin();
 $controller = 'Home';
 $task = 'index';
 
-$controller = (empty($_GET['controller'])) ? $controller : ucfirst($_GET['controller']);
-$task = (empty($_GET['task'])) ? $task : lcfirst($_GET['task']);
+$controller = (empty($_GET['controller'])) ? $controller : ucfirst(strtolower($_GET['controller']));
+$task = (empty($_GET['task'])) ? $task : strtolower($_GET['task']);
 
 $controller = ("Teambuilder\controller\\" . $controller . 'Controller');
 
