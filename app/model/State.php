@@ -29,20 +29,6 @@ class State extends Model
     }
 
     /**
-     * create db record from object
-     *
-     * @return boolean
-     */
-    public function create(): bool
-    {
-        try {
-            return DB::insert("INSERT INTO states(slug,name) VALUES (:slug, :name)", ["slug" => $this->slug, "name" => $this->name]);
-        } catch (\PDOException $Exception) {
-            return false;
-        }
-    }
-
-    /**
      * Find a state by params
      *
      * @param array $params
@@ -70,32 +56,5 @@ class State extends Model
         }
 
         return $res;
-    }
-
-    public function save(): bool
-    {
-        try {
-            return DB::execute("UPDATE states set name = :name, slug = :slug WHERE id = :id", ["slug" => $this->slug, "name" => $this->name, "id" => $this->id]);
-        } catch (\PDOException $Exception) {
-            return false;
-        }
-    }
-
-    public function delete(): bool
-    {
-        try {
-            return DB::execute("DELETE FROM states WHERE id = :id", ["id" => $this->id]);
-        } catch (\PDOException $Exception) {
-            return false;
-        }
-    }
-
-    static function destroy($id): bool
-    {
-        try {
-            return DB::execute("DELETE FROM states WHERE id = :id", ["id" => $id]);
-        } catch (\PDOException $Exception) {
-            return false;
-        }
     }
 }
