@@ -117,8 +117,8 @@ class TeamTest extends TestCase
         $team = Team::make(["name" => "dummy", "state_id" => 1]);
         $team->create();
         $this->assertNull($team->captain());
+        $this->assertTrue($team->delete());
         $this->assertEquals(Member::find(19), Team::find(15)->captain());
-        $this->assertTrue($team->delete()); // expected to succeed
     }
 
     /**
@@ -128,7 +128,6 @@ class TeamTest extends TestCase
     public function testAddMember()
     {
         $team = Team::make(["name" => "dummy", "state_id" => 1]);
-        $team->create();
         $this->assertEquals(0, count($team->members()));
         $this->assertTrue($team->addMember(member::find(1)));
         $this->assertFalse($team->addMember(member::find(1)));
