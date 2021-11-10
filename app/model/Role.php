@@ -2,8 +2,8 @@
 
 namespace Teambuilder\model;
 
-use Teambuilder\model\DB;
-use Teambuilder\model\Model;
+use Teambuilder\core\model\DB;
+use Teambuilder\core\model\Model;
 
 class Role extends Model
 {
@@ -12,13 +12,6 @@ class Role extends Model
     public $name;
 
     const MODO = 2;
-
-    protected string $table;
-
-    public function __construct()
-    {
-        $this->table = self::getShortName(self::class);
-    }
 
     static function make(array $fields): Role // create object, but no db record
     {
@@ -29,39 +22,14 @@ class Role extends Model
         return $role;
     }
 
-    static function find($id): ?Role
-    {
-        $db = DB::selectOne("SELECT * FROM roles where id = :id", ["id" => "$id"]);
-        return ($db) ? self::make($db) : null;
-    }
-
-    static function all(): array
-    {
-        $res = [];
-
-        // Create an array of objects
-        foreach (DB::selectMany("SELECT * FROM roles", []) as $role) {
-            $res[] = self::make($role);
-        }
-
-        return $res;
-    }
-
-    public static function destroy(int $id, string $table = null): bool
-    {
-        $table = self::getShortName(self::class);
-        return parent::destroy($id, $table);
-    }
-
+    /**
+     * get all members with current role inctence
+     *
+     * @return void
+     */
     public function members()
     {
-        $res = DB::selectMany("SELECT members.id, members.name, members.role_id FROM members WHERE members.role_id = :id ORDER BY members.name ASC", ['id' => $this->id]);
-        $members = [];
-
-        foreach ($res as $member) {
-            $members[] = Member::make(['id' => $member['id'], 'name' => $member['name'], 'role_id' => $member['role_id']]);
-        }
-
-        return $members;
+        $query = 'SELECT members.id, members.name, members.role_id FROM members WHERE members.role_id = :id ORDER BY members.name ASC';
+        return DB::selectMany($query, ['id' => $this->id], Member::class);
     }
 }

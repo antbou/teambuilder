@@ -2,9 +2,9 @@
 
 namespace Teambuilder\model;
 
-use Teambuilder\model\DB;
 use Teambuilder\model\Team;
-use Teambuilder\model\Model;
+use Teambuilder\core\model\DB;
+use Teambuilder\core\model\Model;
 
 class Member extends Model
 {
@@ -14,13 +14,7 @@ class Member extends Model
     public $role_id;
 
     const DEFAULT = USER_ID;
-
-    protected string $table;
-
-    public function __construct()
-    {
-        $this->table = self::getShortName(self::class);
-    }
+    const CAPTAIN = 1;
 
     static function make(array $params)
     {
@@ -33,48 +27,13 @@ class Member extends Model
         return $member;
     }
 
-    public static function destroy(int $id, string $table = null): bool
-    {
-        $table = self::getShortName(self::class);
-        return parent::destroy($id, $table);
-    }
-
-    static function all(): array
-    {
-        $res = [];
-
-        foreach (DB::selectMany("SELECT * FROM members ORDER BY members.name ASC", []) as $member) {
-            $res[] = self::make($member);
-        }
-
-        return $res;
-    }
-
-    static function find(int $id): ?Member
-    {
-        $res = DB::selectOne("SELECT * FROM members where id = :id", ['id' => $id]);
-        return ($res) ? self::make($res) : null;
-    }
-
-    public static function where(string $param, $value): array
-    {
-        $res = [];
-
-        foreach (DB::selectMany("SELECT * FROM members where $param = :$param", [$param => $value]) as $member) {
-            $res[] = self::make($member);
-        }
-
-        return $res;
-    }
-
     public function teams(): array
     {
-        $teams = [];
-
-        foreach (DB::selectMany("SELECT teams.id, teams.name, teams.state_id FROM teams INNER JOIN team_member ON team_member.team_id = teams.id WHERE team_member.member_id = :id ORDER BY teams.name ASC", ['id' => $this->id]) as $team) {
-            $teams[] = Team::make($team);
-        }
-
-        return $teams;
+        $query = 'SELECT teams.id, teams.name, teams.state_id FROM teams INNER JOIN team_member ON team_member.team_id = teams.id WHERE team_member.member_id = :id ORDER BY teams.name';
+        return DB::selectMany(
+            $query,
+            ['id' => $this->id],
+            Team::class
+        );
     }
 }
