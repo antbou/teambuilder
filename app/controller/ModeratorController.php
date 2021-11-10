@@ -2,10 +2,11 @@
 
 namespace Teambuilder\controller;
 
+use Teambuilder\core\controller\AbstractController;
 use Teambuilder\model\Role;
 use Teambuilder\core\service\Http;
 
-class ModeratorController
+class ModeratorController extends AbstractController
 {
     public function showAll()
     {
