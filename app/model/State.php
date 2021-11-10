@@ -11,6 +11,13 @@ class State extends Model
     public $slug;
     public $name;
 
+    protected string $table;
+
+    public function __construct()
+    {
+        $this->table = self::getShortName(self::class);
+    }
+
     /**
      * create object, but no db record
      *

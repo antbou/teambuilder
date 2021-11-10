@@ -15,6 +15,13 @@ class Member extends Model
 
     const DEFAULT = USER_ID;
 
+    protected string $table;
+
+    public function __construct()
+    {
+        $this->table = self::getShortName(self::class);
+    }
+
     static function make(array $params)
     {
         $member = new Member();
@@ -24,6 +31,12 @@ class Member extends Model
         $member->password = $member->name . "'s_Pa$\$w0rd";
 
         return $member;
+    }
+
+    public static function destroy(int $id, string $table = null): bool
+    {
+        $table = self::getShortName(self::class);
+        return parent::destroy($id, $table);
     }
 
     static function all(): array

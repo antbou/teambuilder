@@ -8,8 +8,16 @@ use Teambuilder\model\Member;
 
 class Team extends Model
 {
+    public $id;
     public $name;
     public $state_id;
+
+    protected string $table;
+
+    public function __construct()
+    {
+        $this->table = self::getShortName(self::class);
+    }
 
     /**
      * Create and return a Team object
@@ -79,6 +87,12 @@ class Team extends Model
         return $members;
     }
 
+    public static function destroy(int $id, string $table = null): bool
+    {
+        $table = self::getShortName(self::class);
+        return parent::destroy($id, $table);
+    }
+
     /**
      * Gets the team's captain
      *
@@ -91,24 +105,23 @@ class Team extends Model
         return ($res) ? Member::make($res) : null;
     }
 
-    /**
-     * add a member to the team
-     *
-     * @param Member $member
-     * @param [type] $membershipType
-     * @param boolean $isCaptain
-     * @return boolean
-     */
+
     public function addMember(Member $member, int $membershipType = MembershipType::active, bool $isCaptain = false): bool
     {
+
+        $query = "INSERT INTO teambuilder.team_member (member_id, team_id, membership_type, is_captain) VALUES (:member_id, :team_id, :membership_type, :is_captain)";
+
+        $params = [
+            'member_id' => $member->id,
+            'team_id' => $this->id,
+            'membership_type' => $membershipType,
+            'is_captain' => +$isCaptain
+        ];
+
         try {
-            return DB::insert('INSERT INTO teambuilder.team_member (member_id, team_id, membership_type, is_captain) VALUES (:member_id, :team_id, :membership_type, :is_captain)', [
-                'member_id' => $member->id,
-                'team_id' => $this->id,
-                'membership_type' => $membershipType,
-                'is_captain' => +$isCaptain
-            ]);
-        } catch (\Throwable $th) {
+            DB::insert($query, $params);
+            return true;
+        } catch (\PDOException $ex) {
             return false;
         }
     }

@@ -13,6 +13,13 @@ class Role extends Model
 
     const MODO = 2;
 
+    protected string $table;
+
+    public function __construct()
+    {
+        $this->table = self::getShortName(self::class);
+    }
+
     static function make(array $fields): Role // create object, but no db record
     {
         $role = new Role();
@@ -38,6 +45,12 @@ class Role extends Model
         }
 
         return $res;
+    }
+
+    public static function destroy(int $id, string $table = null): bool
+    {
+        $table = self::getShortName(self::class);
+        return parent::destroy($id, $table);
     }
 
     public function members()
