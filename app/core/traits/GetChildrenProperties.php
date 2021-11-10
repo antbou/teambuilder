@@ -1,11 +1,11 @@
 <?php
 
-namespace Teambuilder\model\traits;
+namespace Teambuilder\core\traits;
 
 use ReflectionClass;
 use ReflectionProperty;
 
-trait Children
+trait GetChildrenProperties
 {
 
     /**

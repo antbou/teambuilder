@@ -1,8 +1,8 @@
 <?php
 
-namespace Teambuilder\model\traits;
+namespace Teambuilder\core\traits;
 
-trait Table
+trait ClassToTable
 {
     public static function getShortName($classname): string
     {
