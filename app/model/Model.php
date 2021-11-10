@@ -13,12 +13,7 @@ abstract class Model
     use Table;
 
     public $id;
-    private static $table;
-
-    public function __construct()
-    {
-        self::$table = self::getShortName(get_called_class());
-    }
+    protected string $table;
 
 
     /**
@@ -38,7 +33,7 @@ abstract class Model
 
         $fields = implode(',', $fields);
         $fieldsBind = implode(',', $fieldsBind);
-        $query = "INSERT INTO " . self::$table . " ($fields) VALUES ($fieldsBind)";
+        $query = "INSERT INTO {$this->table} ($fields) VALUES ($fieldsBind)";
 
         try {
             $this->id = DB::insert($query, $this->toArray());
@@ -53,10 +48,10 @@ abstract class Model
      *
      * @return boolean
      */
-    public static function destroy(int $id): bool
+    public static function destroy(int $id, string $table): bool
     {
         try {
-            DB::execute("DELETE FROM " . self::$table . " WHERE id = :id", ['id' => $id]);
+            DB::execute("DELETE FROM {$table} WHERE id = :id", ['id' => $id]);
             return true;
         } catch (\PDOException $Exception) {
             return false;
@@ -70,7 +65,7 @@ abstract class Model
      */
     public function delete(): bool
     {
-        return self::destroy($this->id);
+        return self::destroy($this->id, $this->table);
     }
 
     /**
@@ -91,7 +86,7 @@ abstract class Model
 
         $fields = implode(',', $fields);
 
-        $query = "UPDATE " . self::$table . " SET $fields WHERE id=:id";
+        $query = "UPDATE {$this->table} SET $fields WHERE id=:id";
 
         try {
             return DB::execute($query, $this->toArray());
