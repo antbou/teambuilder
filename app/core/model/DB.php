@@ -1,6 +1,6 @@
 <?php
 
-namespace Teambuilder\model;
+namespace Teambuilder\core\model;
 
 use PDO;
 use PDOException;
@@ -29,18 +29,19 @@ class DB
         }
     }
 
-    public static function selectMany(string $query, array $params): array
+    public static function selectMany(string $query, array $params, string $className): array
     {
         $sth = self::getPdo()->prepare($query);
         $sth->execute($params);
-
+        $sth->setFetchMode(PDO::FETCH_CLASS, $className);
         return $sth->fetchAll();
     }
 
-    public static function selectOne(string $query, array $params): ?array
+    public static function selectOne(string $query, array $params, string $className): ?object
     {
         $sth = self::getPdo()->prepare($query);
         $sth->execute($params);
+        $sth->setFetchMode(PDO::FETCH_CLASS, $className);
         $result = $sth->fetch();
 
         return ($result) ? $result : null;
