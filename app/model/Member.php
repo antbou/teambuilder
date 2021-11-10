@@ -15,24 +15,13 @@ class Member extends Model
 
     const DEFAULT = USER_ID;
 
-
-    public function create(): bool
-    {
-        try {
-            $this->id = DB::insert("INSERT INTO members(id, name,password,role_id) VALUES (:id, :name, :password, :role_id)", ['id' => $this->id, 'name' => $this->name, 'password' => $this->name . "'s_Pa$\$w0rd", 'role_id' => $this->role_id]);
-            return true;
-        } catch (\Throwable $th) {
-            return false;
-        }
-    }
-
     static function make(array $params)
     {
         $member = new Member();
-
         $member->id = (isset($params['id'])) ? $params['id'] : null;
         $member->name = $params['name'];
         $member->role_id = $params['role_id'];
+        $member->password = $member->name . "'s_Pa$\$w0rd";
 
         return $member;
     }
@@ -63,30 +52,6 @@ class Member extends Model
         }
 
         return $res;
-    }
-
-    public function save(): bool
-    {
-        try {
-            return DB::execute("UPDATE members set name = :name, role_id = :role_id WHERE id = :id", ['id' => $this->id, 'name' => $this->name, 'role_id' => $this->role_id]);
-        } catch (\Throwable $th) {
-            return false;
-        }
-    }
-
-    public function delete(): bool
-    {
-        return self::destroy($this->id);
-    }
-
-    public static function destroy(int $id): bool
-    {
-        try {
-            DB::execute("DELETE FROM members WHERE id = :id", ['id' => $id]);
-            return true;
-        } catch (\Throwable $th) {
-            return false;
-        }
     }
 
     public function teams(): array
