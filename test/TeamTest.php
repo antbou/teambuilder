@@ -67,7 +67,7 @@ class TeamTest extends TestCase
         $team = Team::find(1);
         $this->assertFalse($team->delete()); // expected to fail because of foreign key
         $team = Team::make(["name" => "dummy", "state_id" => 1]);
-        $team->create();
+        $this->assertTrue($team->create());
         $id = $team->id;
         $this->assertTrue($team->delete()); // expected to succeed
         $this->assertNull(Team::find($id)); // we should not find it back
@@ -115,10 +115,11 @@ class TeamTest extends TestCase
     public function testCaptain()
     {
         $team = Team::make(["name" => "dummy", "state_id" => 1]);
-        $team->create();
+        $this->assertTrue($team->create());
         $this->assertNull($team->captain());
-        $this->assertEquals(Member::find(19), Team::find(15)->captain());
-        $this->assertTrue($team->delete()); // expected to succeed
+        $this->assertTrue($team->delete());
+        $this->assertEquals(Member::find(1), Team::find(2)->captain());
+        $this->assertNotEquals(Member::find(5), Team::find(2)->captain());
     }
 
     /**
@@ -128,10 +129,11 @@ class TeamTest extends TestCase
     public function testAddMember()
     {
         $team = Team::make(["name" => "dummy", "state_id" => 1]);
-        $team->create();
         $this->assertEquals(0, count($team->members()));
+        $this->assertFalse($team->addMember(member::find(1))); // expected to failed because team is not stored in database
+        $this->assertTrue($team->create());
         $this->assertTrue($team->addMember(member::find(1)));
-        $this->assertFalse($team->addMember(member::find(1)));
+        $this->assertFalse($team->addMember(member::find(1))); // expected to failed because this member already existe in the team
         $this->assertEquals(1, count($team->members()));
     }
 }

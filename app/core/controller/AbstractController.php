@@ -1,11 +1,11 @@
 <?php
 
-namespace Teambuilder\controller;
+namespace Teambuilder\core\controller;
 
 abstract class AbstractController
 {
     /**
-     * Verifie que le CSRF récupèrer correspont au CRSF de la session
+     * Verifies that the recovered CSRF matches the CRSF of the session
      *
      * @return bool
      */

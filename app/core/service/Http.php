@@ -12,6 +12,7 @@ class Http
     {
         http_response_code(404);
         Render::render('errors/404');
+        exit();
     }
 
     public static function redirectToUrl(string $url): void

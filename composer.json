@@ -6,5 +6,11 @@
         "psr-4": {
             "Teambuilder\\": "app/"
         }
+    },
+    "scripts": {
+        "test": [
+            "php loadme.php",
+            "vendor/bin/phpunit test --colors=always"
+        ]
     }
 }
