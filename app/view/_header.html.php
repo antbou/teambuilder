@@ -8,6 +8,6 @@
                 Teambuilder
             </a>
         </h1>
-        <p>Connecté en tant que : <?= $_SESSION['member']->name ?></p>
+        <p>Connecté en tant que : <a href="?controller=member&task=profile&id=<?= $_SESSION['member']->id ?>"><?= $_SESSION['member']->name ?></a></p>
     </div>
 </div>
