@@ -1,4 +1,6 @@
 <div class="container">
+    <a href="?controller=member&task=edit&id=<?= $member->id ?>" class="btn btn-info" role="button">Edit profile</a>
+
     <h1>Profil de l'utilisateur <?= $member->name; ?></h1>
     <ul>
         <li><b>Prénom</b> : <?= $member->name; ?></li>
