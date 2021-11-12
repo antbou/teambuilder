@@ -5,13 +5,15 @@ namespace Teambuilder\controller;
 use Teambuilder\model\Member;
 use Teambuilder\core\service\Http;
 use Teambuilder\core\controller\AbstractController;
-
+use Teambuilder\model\Role;
+use Teambuilder\model\Status;
 
 class MemberController extends AbstractController
 {
     public function list()
     {
-        return Http::response('member/list', ['members' => Member::all(order: 'name')]);
+        $isModo = ($_SESSION['member']->getRole() == Role::where('slug', 'MOD')[0]);
+        return Http::response('member/list', ['members' => Member::all(order: 'name'), 'isModo' => $isModo]);
     }
 
     public function profile()
