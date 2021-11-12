@@ -25,5 +25,7 @@ class MemberController extends AbstractController
         if (is_null($member)) {
             return Http::notFoundException();
         }
+
+        return Http::response('member/profile', ['member' => $member]);
     }
 }

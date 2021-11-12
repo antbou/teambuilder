@@ -12,6 +12,7 @@ class Member extends Model
     public $name;
     public $password;
     public $role_id;
+    public $status_id;
 
     const DEFAULT = USER_ID;
     const CAPTAIN = 1;
@@ -35,5 +36,15 @@ class Member extends Model
             ['id' => $this->id],
             Team::class
         );
+    }
+
+    public function getRole()
+    {
+        return Role::find($this->role_id);
+    }
+
+    public function getStatus()
+    {
+        return Status::find($this->status_id);
     }
 }
