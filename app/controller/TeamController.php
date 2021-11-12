@@ -14,18 +14,18 @@ class TeamController extends AbstractController
 {
     public function listAll()
     {
-        Http::response('team/listAll', ['teams' => Team::all(order: 'name')]);
+        return Http::response('team/listAll', ['teams' => Team::all(order: 'name')]);
     }
 
     public function list()
     {
-        Http::response('team/list', ['teams' => Member::find(Member::DEFAULT)->teams()]);
+        return Http::response('team/list', ['teams' => Member::find(Member::DEFAULT)->teams()]);
     }
 
     public function show()
     {
         if (!isset($_GET['id'])) {
-            Http::notFoundException();
+            return Http::notFoundException();
         }
 
         // Default ID = 1
@@ -35,7 +35,7 @@ class TeamController extends AbstractController
             $id = 1;
         }
 
-        Http::response('team/showTeam', ['team' => Team::find($id)]);
+        return Http::response('team/showTeam', ['team' => Team::find($id)]);
     }
 
     public function create()
@@ -54,12 +54,12 @@ class TeamController extends AbstractController
             );
 
             if ($team->create() && $team->addMember($_SESSION['member'], isCaptain: true)) { // redirect if success
-                Http::redirectToUrl("/?controller=team&task=show&id=$team->id");
+                return Http::redirectToUrl("/?controller=team&task=show&id=$team->id");
             } else {
                 $form->getFields()['title']->error = "Cette équipe existe déjà !";
             }
         }
 
-        Http::response('team/createTeam', ['fields' => $form->getFields()], true);
+        return Http::response('team/createTeam', ['fields' => $form->getFields()], true);
     }
 }

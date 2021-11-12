@@ -12,6 +12,7 @@ class Member extends Model
     public $name;
     public $password;
     public $role_id;
+    public $status_id;
 
     const DEFAULT = USER_ID;
     const CAPTAIN = 1;
@@ -35,5 +36,26 @@ class Member extends Model
             ['id' => $this->id],
             Team::class
         );
+    }
+
+    public function teamsCaptain(): array
+    {
+        $query = "SELECT teams.* from teams INNER JOIN team_member ON team_member.team_id = teams.id WHERE team_member.member_id = :id AND team_member.is_captain = 1";
+
+        return DB::selectMany(
+            $query,
+            ['id' => $this->id],
+            Team::class
+        );
+    }
+
+    public function getRole()
+    {
+        return Role::find($this->role_id);
+    }
+
+    public function getStatus()
+    {
+        return Status::find($this->status_id);
     }
 }

@@ -6,6 +6,9 @@ trait ClassToTable
 {
     public static function getShortName($classname): string
     {
-        return strtolower((new \ReflectionClass($classname))->getShortName()) . 's';
+        $shortname = (new \ReflectionClass($classname))->getShortName();
+        $shortname = (substr($shortname, -1) === 's') ? $shortname : $shortname . 's';
+
+        return strtolower($shortname);
     }
 }
