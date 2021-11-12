@@ -53,7 +53,7 @@ class MemberController extends AbstractController
         if ($form->process() && $this->csrfValidator()) { // if form is submit and csrf valid
 
             $member->name = $form->getFields()['name']->value;
-            if ($member->save()) { // redirect if success
+            if ($member->save()) {
                 $success = "Modification réussi !";
             } else {
                 $form->getFields()['name']->error = "Nom déjà existant !";
