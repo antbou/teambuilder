@@ -1,6 +1,6 @@
 <div class="container-fluid bg-success ">
     <div class="text-left">
-        Version: Début Examen - Anthony
+        Version: Fin Examen - Anthony
     </div>
     <div class="text-center">
         <h1>
