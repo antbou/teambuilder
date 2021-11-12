@@ -13,4 +13,17 @@ class MemberController extends AbstractController
     {
         return Http::response('member/list', ['members' => Member::all(order: 'name')]);
     }
+
+    public function profile()
+    {
+        if (!isset($_GET['id'])) {
+            return Http::notFoundException();
+        }
+
+        $member = Member::find($_GET['id']);
+
+        if (is_null($member)) {
+            return Http::notFoundException();
+        }
+    }
 }
