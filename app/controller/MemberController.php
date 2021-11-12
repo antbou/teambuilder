@@ -11,6 +11,6 @@ class MemberController extends AbstractController
 {
     public function list()
     {
-        Http::response('member/list', ['members' => Member::all(order: 'name')]);
+        return Http::response('member/list', ['members' => Member::all(order: 'name')]);
     }
 }

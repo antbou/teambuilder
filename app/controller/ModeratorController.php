@@ -10,6 +10,6 @@ class ModeratorController extends AbstractController
 {
     public function showAll()
     {
-        Http::response('moderator/showAll', ['modo' => Role::find(Role::MODO)->members()]);
+        return Http::response('moderator/showAll', ['modo' => Role::find(Role::MODO)->members()]);
     }
 }

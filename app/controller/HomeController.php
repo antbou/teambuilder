@@ -10,6 +10,6 @@ class HomeController extends AbstractController
 {
     public function index()
     {
-        Http::response('home/index');
+        return Http::response('home/index');
     }
 }
