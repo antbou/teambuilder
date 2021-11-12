@@ -38,6 +38,17 @@ class Member extends Model
         );
     }
 
+    public function teamsCaptain(): array
+    {
+        $query = "SELECT teams.* from teams INNER JOIN team_member ON team_member.team_id = teams.id WHERE team_member.member_id = :id AND team_member.is_captain = 1";
+
+        return DB::selectMany(
+            $query,
+            ['id' => $this->id],
+            Team::class
+        );
+    }
+
     public function getRole()
     {
         return Role::find($this->role_id);
