@@ -35,6 +35,7 @@ class MemberController extends AbstractController
 
     public function edit() // only work for member user not modo user
     {
+        // TO DO edit for modo user
         if (!isset($_GET['id'])) {
             return Http::notFoundException();
         }
