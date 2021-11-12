@@ -1,6 +1,7 @@
 <div class="container">
     <b> <?= $member->name; ?></b>
     <?php if (!$isModo) : ?>
+        <!--Classic user -->
         <form action="?controller=member&task=edit&id=<?= $member->id ?>" accept-charset="UTF-8" method="post">
             <p class="text-success">
                 <?= (is_null($success)) ? '' : $success; ?>
@@ -19,6 +20,7 @@
             <input type="submit" name="commit" value="Edit user" />
         </form>
     <?php else : ?>
+        <!--modo user -->
         <form action="?controller=member&task=edit&id=<?= $member->id ?>" accept-charset="UTF-8" method="post">
             <p class="text-success">
                 <?= (is_null($success)) ? '' : $success; ?>

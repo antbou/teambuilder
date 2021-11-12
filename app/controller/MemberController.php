@@ -33,7 +33,7 @@ class MemberController extends AbstractController
         return Http::response('member/profile', ['member' => $member]);
     }
 
-    public function edit()
+    public function edit() // only work for member user not modo user
     {
         if (!isset($_GET['id'])) {
             return Http::notFoundException();
@@ -53,8 +53,6 @@ class MemberController extends AbstractController
         if ($form->process() && $this->csrfValidator()) { // if form is submit and csrf valid
 
             $member->name = $form->getFields()['name']->value;
-
-
             if ($member->save()) { // redirect if success
                 $success = "Modification réussi !";
             } else {
